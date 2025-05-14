@@ -1,0 +1,73 @@
+services:
+  database:
+    container_name: notecrypt-database
+    image: mariadb:latest
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: api
+    ports:
+      - "3306:3306"
+    volumes:
+      # - ./database/datastore:/var/lib/mysql
+      - ./database/scripts/initialize.sql:/docker-entrypoint-initdb.d/initialize.sql
+    networks:
+      - notecrypt-network
+
+  client:
+    container_name: notecrypt-client
+    image: node:22-alpine
+    working_dir: /client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    # command: /bin/sh -c "corepack enable && corepack prepare yarn@4.6.0 --activate && yarn install && yarn run dev --host 0.0.0.0"
+    command: /bin/sh -c "corepack enable && corepack prepare yarn@4.6.0 --activate && yarn install && yarn run dev"
+    networks:
+      - notecrypt-network
+
+  api:
+    container_name: notecrypt-api
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      SESSION_SECRET_KEY: YKVw2xySAE704cjgFvYu7JqkO6Eglt0OdjqvFf4G6ww
+      PERSISTENCE_USER: root
+      PERSISTENCE_PASSWORD: secret
+      PERSISTENCE_HOST: database # NOTE : THE VALUE OF `database` REFERS TO THE PERSISTENCE SERVICE NAME
+      PERSISTENCE_PORT: 3306
+      PERSISTENCE_DATABASE: api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    volumes:
+      - ./api:/api
+    networks:
+      - notecrypt-network
+
+  nginx:
+    container_name: notecrypt-nginx
+    image: nginx:alpine
+    ports:
+      - "443:443"
+    depends_on:
+      - api
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./certificates:/etc/nginx/certs:ro
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+    networks:
+      - notecrypt-network
+
+networks:
+  notecrypt-network:
+    name: notecrypt-network
+    driver: bridge
+
+volumes:
+  datastore:
+    driver: local
