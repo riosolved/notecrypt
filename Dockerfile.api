@@ -7,8 +7,8 @@ RUN chmod +x /scripts/python/setup.sh
 COPY ./scripts/docker/initialize.sh /scripts/docker/initialize.sh
 RUN chmod +x /scripts/docker/initialize.sh
 
-RUN ls -l /scripts/python/
-RUN ls -l /scripts/docker/
+RUN ls -l /scripts/python
+RUN ls -l /scripts/docker
 
 RUN apk update
 
