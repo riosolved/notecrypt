@@ -1,5 +1,6 @@
 SETUP
 ---
+> ./scripts/setup.sh
 
 CERTIFICATES
 ---
@@ -62,20 +63,24 @@ Debug:
             X509v3 Subject Alternative Name:
                 DNS:client.localhost, DNS:localhost
             ```
+RUN
+---
+> ./scripts/docker/start.sh
+> ./scripts/docker/stop.sh
 
 API
 ---
-- Running locally,
+- Running locally:
 > ./scripts/python/run.sh --file ./api/requirements.txt
 
-/register
-curl -k https://127.0.0.1/api/register -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
+- Endpoints:
+> /register
+    > curl -k https://127.0.0.1/api/register -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
+> /enter
+    > curl -k https://127.0.0.1/api/enter -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
+> /exit
+    > ...
 
-/enter
-curl -k https://127.0.0.1/api/enter -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
-
-/exit
-...
-
-- Inspecting traffic
-> sudo tcpdump -i any -X port 5000
+- DEBUG:
+    > Inspecting traffic:
+        > sudo tcpdump -i any -X port 5000

@@ -19,8 +19,6 @@ application = Flask(__name__)
 CORS(
     application,
     origins=[
-        # "http://127.0.0.1:5173"
-        # "https://localhost"
         "https://client.localhost"
     ]
 )

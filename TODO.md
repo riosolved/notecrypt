@@ -1,6 +1,6 @@
 - User Authentication
-    - Add user registration/login endpoints with password hashing (bcrypt).
-    - Use JWT for session management.
+    - Add user /exit endpoint
+    - Add mechanism for auto-sign in and relocate to Notes view if cookie deems access granted.
 - Note Storage
     - Create a Note model.
     - Implement create/read/delete routes for user-owned notes.

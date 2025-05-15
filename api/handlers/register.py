@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, make_response
 import json
 import utilities
 import bcrypt
@@ -10,6 +10,16 @@ def register(request):
         return jsonify({
             'error': 'HTTPS is required.'
         }), 403
+
+    if request.method == 'OPTIONS':
+        response = make_response()
+
+        response.headers['Access-Control-Allow-Origin'] = 'https://client.localhost'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS, POST'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+
+        return response
 
     try:
         database = utilities.database.instance()
