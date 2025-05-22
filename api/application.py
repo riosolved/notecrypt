@@ -16,11 +16,16 @@ utilities.database.initialize({
 
 application = Flask(__name__)
 
+origins = [
+    "https://client.localhost"
+]
+
+if os.environ.get('ENVIRONMENT') == 'local':
+    origins.append("http://127.0.0.1")
+
 CORS(
     application,
-    origins=[
-        "https://client.localhost"
-    ]
+    origins=origins
 )
 
 application.register_blueprint(routes.api, url_prefix="/api")

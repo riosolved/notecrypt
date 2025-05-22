@@ -44,7 +44,7 @@ def register(request):
 
     database['cursor'].execute("""
         SELECT *
-        FROM users
+        FROM account
 
         WHERE email = %s
     """, (
@@ -57,7 +57,6 @@ def register(request):
             'error': 'Email is already in use.'
         }), 400
 
-
     salt = bcrypt.gensalt()
 
     password_hashed = bcrypt.hashpw(
@@ -68,7 +67,7 @@ def register(request):
     # NOTE : Insert the new user.
     database['cursor'].execute("""
         INSERT
-        INTO users (
+        INTO account (
             email,
             password
         ) VALUES (
@@ -85,12 +84,13 @@ def register(request):
     database['connection'].commit()
     database['cursor'].close()
 
-    # NOTE : SESSION TOKEN
-    token = utilities.session.create(user_id, request)
+    recepient = data.get('recepient')
+
+    utilities.account.activation.email(recepient)
 
     # NOTE : RESPOND
     response = jsonify({
-        'message': 'User registered successfully.'
+        'message': 'Account created.'
     })
 
     utilities.session.header(

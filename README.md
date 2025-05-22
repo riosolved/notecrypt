@@ -71,11 +71,30 @@ RUN
 API
 ---
 - Running locally:
-> ./scripts/python/run.sh --file ./api/requirements.txt
+```
+NOTE:
+In Windows, for WSL to connect to MariaDB, modify "bind-address" in [mysqld] to "0.0.0.0" in,
+    - "C:\Program Files\MariaDB 11.4\data\my.ini"
+
+Execute in windows MariaDB client,
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'host.docker.internal' IDENTIFIED BY 'secret';
+FLUSH PRIVILEGES;
+
+NOTE: 10.0.0.78 is from Windows' ipconfig > Ethernet adapter Ethernet > IPv4 Address
+
+ENVIRONMENT="local" \
+SESSION_SECRET_KEY=YKVw2xySAE704cjgFvYu7JqkO6Eglt0OdjqvFf4G6ww \
+PERSISTENCE_USER="root" \
+PERSISTENCE_PASSWORD="secret" \
+PERSISTENCE_HOST="10.0.0.78" \
+PERSISTENCE_PORT="3306" \
+PERSISTENCE_DATABASE="api" \
+./scripts/python/run.sh --file ./api/requirements.txt
+```
 
 - Endpoints:
 > /register
-    > curl -k https://127.0.0.1/api/register -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
+    > curl -X POST http://127.0.0.1:5000/api/account/register -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
 > /enter
     > curl -k https://127.0.0.1/api/enter -H "Content-Type: application/json" -d '{"email":"h","password":"h"}'
 > /exit
@@ -84,3 +103,7 @@ API
 - DEBUG:
     > Inspecting traffic:
         > sudo tcpdump -i any -X port 5000
+
+RESOURCES
+---
+- https://app.kontext.tech/project/tools/article/docker-with-wsl-2-ssl-proxy-and-ssl-certificate-problem

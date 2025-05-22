@@ -2,4 +2,4 @@
 
 . "$(dirname "$0")/setup.sh" "$@"
 
-python ./api/application.py
+python -B ./api/application.py

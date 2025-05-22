@@ -10,7 +10,15 @@ class Database:
         configuration
     ):
         try:
-            print(f"Connecting with user: {configuration['user']}, host: {configuration['host']}, database: {configuration['database']}")
+            print(f"""[DATABASE][Connection] Connecting with user: {
+                configuration['user']
+            }, host: {
+                configuration['host']
+            }, database: {
+                configuration['database']
+            }, port: {
+                int(configuration['port'])
+            }""")
 
             self.connection = mariadb.connect(
                 user=configuration['user'],

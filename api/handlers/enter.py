@@ -57,7 +57,7 @@ def enter(request):
 
     database['cursor'].execute("""
         SELECT *
-        FROM users
+        FROM account
 
         WHERE email = %s
     """, (
