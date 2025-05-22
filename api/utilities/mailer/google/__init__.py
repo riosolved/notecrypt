@@ -1,1 +1,1 @@
-from .app_password import mailer
+from .app_password import Mailer

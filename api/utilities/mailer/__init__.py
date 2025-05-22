@@ -10,20 +10,22 @@ PROVIDERS = {
     "BREVO": 'brevo'
 }
 
+@contextmanager
 def context(
     provider,
     **kwargs
 ):
     try:
-        match provider:
-            case PROVIDERS.GOOGLE.APP_PASSWORD:
-                # yield Google_AppPassword.mailer(**kwargs)
-                pass
-            case PROVIDERS.BREVO:
-                # yield Brevo.mailer(**kwargs)
-                pass
-            case _:
-                ValueError(f"Unknown mailer: {provider}")
+        if provider == PROVIDERS['GOOGLE']['APP_PASSWORD']:
+            pass
+            # yield Google_AppPassword.mailer(**kwargs)
+        elif provider == PROVIDERS['GOOGLE']['APP_PASSWORD']:
+            pass
+            # yield Brevo.mailer(**kwargs)
+        else:
+            ValueError(f"Unknown mailer: {provider}")
     finally:
         if hasattr(mailer, "close"):
             mailer.close()
+
+__all__ = ["context", "PROVIDERS"]

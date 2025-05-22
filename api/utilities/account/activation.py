@@ -7,11 +7,18 @@ def link():
     return f"https://client.localhost/activate?token={token}"
 
 def email(recepient):
+
+    # TODO : ERROR HERE WITH mailer.context
+    
+    print(f"DEBUG:: {mailer}")
+
+    return
+
     with mailer.context(
-        mailer.PROVIDERS.GOOGLE.APP_PASSWORD,
+        mailer.PROVIDERS['GOOGLE']['APP_PASSWORD'],
         username="riosolved@gmail.com",
         password="123"
-    ) as mailer:
+    ) as gmail:
         link = generate_link()
 
         message = f"""\

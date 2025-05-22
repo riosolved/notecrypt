@@ -93,10 +93,7 @@ def register(request):
         'message': 'Account created.'
     })
 
-    utilities.session.header(
-        token,
-        response
-    )
+    # TODO : SESSION LOGIC REMOVED, DO WE NEED TO CONSIDER SESSION HERE?
 
     response.status_code = 201
 
